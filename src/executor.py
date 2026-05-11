@@ -1,4 +1,5 @@
 #%%
+import ast
 import subprocess
 import sys
 import json
@@ -46,17 +47,19 @@ def run_solution(code: str, test_cases: list[tuple[dict, Any]]) -> dict:
 #%%
 def _build_harness(code: str, kwargs: dict, expected: Any) -> str:
     """
-    Use base64-encoded kwargs to avoid any quote/escape conflicts in the f-string
+    Build a Python test harness.
+
+    Important: generated code is placed at column zero.
+    Do not indent the inserted code inside a triple-quoted string,
+    because textwrap.dedent can remove the indentation from function bodies and cause IndentationError.
     """
-    kwargs_b64 = base64.b64encode(json.dumps(kwargs).encode()).decode()
+    cleaned_code = extract_code(code).strip()
+    kwargs_b64 = base64.b64encode(json.dumps(kwargs).encode("utf-8")).decode("utf-8")
     expected_repr = repr(expected)
 
-    harness = textwrap.dedent(f"""
-    import json, sys, base64
-    
-    {code}
-    
-    raw = base64.b64decode("{kwargs_b64}").decode()
+    prefix = "import base64\nimport json\nimport sys\n\n"
+    suffix = f"""
+    raw = base64.b64decode("{kwargs_b64}").decode("utf-8")
     kwargs = json.loads(raw)
     expected = {expected_repr}
     try:
@@ -69,29 +72,34 @@ def _build_harness(code: str, kwargs: dict, expected: Any) -> str:
         import traceback
         print(f"ERROR: {{type(e).__name__}}: {{e}}")
         traceback.print_exc(file=sys.stdout)
-    """)
-    return harness
+    """
+    return prefix + cleaned_code + "\n\n" + textwrap.dedent(suffix).lstrip()
 
 #%%
 def extract_code(text: str) -> str:
     """
     Extract Python code from a markdown code block or raw text
     """
-    if "```python" in text:
-        start = text.index("```python") + 9
-        end = text.index("```", start)
-        return text[start:end].strip()
-    if "```" in text:
-        start = text.index("```") + 3
-        end = text.index("```", start)
-        return text[start:end].strip()
-    return text.strip()
+    text = text.strip()
+
+    fenced_python = re.search(r"```python\s*(.*?)```", text, re.DOTALL)
+    if fenced_python:
+        return fenced_python.group(1).strip()
+
+    fenced = re.search(r"```\s*(.*?)```", text, re.DOTALL)
+    if fenced:
+        return fenced.group(1).strip()
+
+    def_match = re.search(r"(^def\s+solve\s*\(.*)", text, re.DOTALL | re.MULTILINE)
+    if def_match:
+        return def_match.group(1).strip()
+
+    return text
 
 #%%
 def extract_json(text: str) -> dict:
     """
-    Robustly extract JSON from LLM output.
-    GPT often wraps JSON in ```json ... ``` fences.
+    Extract JSON from model output.
     """
     text = text.strip()
     for pattern in [r"```json\s*(.*?)```", r"```\s*(.*?)```"]:
@@ -113,3 +121,11 @@ def extract_json(text: str) -> dict:
         except json.JSONDecodeError:
             pass
     return {}
+
+
+def check_syntax(code: str) -> tuple[bool, str]:
+    try:
+        ast.parse(extract_code(code))
+        return True, ""
+    except SyntaxError as exc:
+        return False, str(exc)

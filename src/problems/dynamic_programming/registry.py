@@ -2,12 +2,18 @@
 from .one_d import PROBLEMS as ONE_D_PROBLEMS
 from .two_d import PROBLEMS as TWO_D_PROBLEMS
 from .knapsack import PROBLEMS as KNAPSACK_PROBLEMS
+from .tree import PROBLEMS as TREE_PROBLEMS
+from .bitmask import PROBLEMS as BITMASK_PROBLEMS
+from .interval import PROBLEMS as INTERVAL_PROBLEMS
 
 #%%
 PROBLEMS = (
     ONE_D_PROBLEMS
     + TWO_D_PROBLEMS
     + KNAPSACK_PROBLEMS
+    + TREE_PROBLEMS
+    + BITMASK_PROBLEMS
+    + INTERVAL_PROBLEMS
 )
 
 PROBLEM_BY_ID = {p["id"]: p for p in PROBLEMS}

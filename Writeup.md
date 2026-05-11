@@ -141,6 +141,10 @@ To address this, I changed the setup so that the baseline uses a weaker model wi
 
 Another limitation is that the current mutations are prompt-level mutations. The agent changes its solving protocol and few-shot context, but it does not yet generate new Python tools or rewrite its runtime architecture. This is a useful first step, but it is not full autonomous agent design.
 
+A later run failed in the opposite direction: both baseline and evolved agent scored 0 percent. The failure was not algorithmic. Every generated solution failed with IndentationError. This exposed a bug in the evaluation harness: generated code was being interpolated into an indented multiline string, and dedent removed the indentation from function bodies. I fixed the executor so generated code is inserted at column zero before rerunning the experiment.
+
+After fixing the executor, both the baseline and evolved agent reached 100 percent on the held-out test set. This showed that the benchmark was saturated. The result did not demonstrate improvement, but it revealed that the evaluation was too small and too easy for the chosen models.
+
 ## What I Would Do With More Time
 
 With more time, I would extend the project in four directions.

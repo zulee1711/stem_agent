@@ -37,6 +37,7 @@ PROBLEMS = [
             "Write a Python function: def solve(m: int, n: int) -> int"
         ),
         "test_cases": [
+            ({"m": 1, "n": 1}, 1),
             ({"m": 3, "n": 7}, 28),
             ({"m": 3, "n": 2}, 3),
             ({"m": 7, "n": 3}, 28),
@@ -56,6 +57,7 @@ PROBLEMS = [
         "test_cases": [
             ({"grid": [[1, 3, 1], [1, 5, 1], [4, 2, 1]]}, 7),
             ({"grid": [[1, 2, 3], [4, 5, 6]]}, 12),
+            ({"grid": [[5]]}, 5),
         ],
     },
     {
@@ -73,6 +75,7 @@ PROBLEMS = [
             ({"word1": "horse", "word2": "ros"}, 3),
             ({"word1": "intention", "word2": "execution"}, 5),
             ({"word1": "", "word2": "a"}, 1),
+            ({"word1": "abc", "word2": "abc"}, 0),
         ],
     },
     {
@@ -82,14 +85,14 @@ PROBLEMS = [
         "difficulty": "medium",
         "split": "eval",
         "description": (
-            "Given two strings text1 and text2, return the length of their longest "
-            "common subsequence.\n"
+            "Given two strings text1 and text2, return the length of their longest common subsequence.\n"
             "Write a Python function: def solve(text1: str, text2: str) -> int"
         ),
         "test_cases": [
             ({"text1": "abcde", "text2": "ace"}, 3),
             ({"text1": "abc", "text2": "abc"}, 3),
             ({"text1": "abc", "text2": "def"}, 0),
+            ({"text1": "", "text2": "abc"}, 0),
         ],
     },
     {
@@ -108,7 +111,9 @@ PROBLEMS = [
                           ["1","1","1","1","1"],["1","0","0","1","0"]]}, 4),
             ({"matrix": [["0","1"],["1","0"]]}, 1),
             ({"matrix": [["1"]]}, 1),
-        ],
+            ({"matrix": [["1", "1"], ["1", "1"]]}, 4),
+            ({"matrix": []}, 0),
+            ({"matrix": [["0"]]}, 0),        ],
     },
     {
         "id": make_id("dp", "2d", "interleaving_string"),
@@ -121,9 +126,30 @@ PROBLEMS = [
             "Write a Python function: def solve(s1: str, s2: str, s3: str) -> bool"
         ),
         "test_cases": [
+            ({"s1": "", "s2": "", "s3": ""}, True),
+            ({"s1": "", "s2": "abc", "s3": "abc"}, True),
+            ({"s1": "abc", "s2": "", "s3": "abc"}, True),
             ({"s1": "aabcc", "s2": "dbbca", "s3": "aadbbcbcac"}, True),
             ({"s1": "aabcc", "s2": "dbbca", "s3": "aadbbbaccc"}, False),
-            ({"s1": "", "s2": "", "s3": ""}, True),
+        ],
+    },
+    {
+        "id": make_id("dp", "2d", "dungeon_game"),
+        "title": "Dungeon Game",
+        "category": "2d_dp",
+        "difficulty": "hard",
+        "split": "test",
+        "description": (
+            "A hero starts at top-left and must reach bottom-right. Grid values can be negative "
+            "or positive. The hero dies if health is less than or equal to 0 at any point. "
+            "Return the minimum initial health needed.\n"
+            "Write a Python function: def solve(dungeon: list) -> int"
+        ),
+        "test_cases": [
+            ({"dungeon": [[-2, -3, 3], [-5, -10, 1], [10, 30, -5]]}, 7),
+            ({"dungeon": [[0]]}, 1),
+            ({"dungeon": [[-5]]}, 6),
+            ({"dungeon": [[100]]}, 1),
         ],
     },
 ]

@@ -33,6 +33,24 @@ PROBLEMS = [
             ({"nums": [1, 5, 11, 5]}, True),
             ({"nums": [1, 2, 3, 5]}, False),
             ({"nums": [3, 3, 3, 4, 5]}, True),
+            ({"nums": [2, 2, 3, 5]}, False),
+        ],
+    },
+    {
+        "id": make_id("dp", "knapsack", "target_sum"),
+        "title": "Target Sum",
+        "category": "knapsack",
+        "difficulty": "medium",
+        "split": "eval",
+        "description": (
+            "Given nums and target, assign plus or minus to each number. Return the number "
+            "of ways to reach target.\n"
+            "Write a Python function: def solve(nums: list, target: int) -> int"
+        ),
+        "test_cases": [
+            ({"nums": [1, 1, 1, 1, 1], "target": 3}, 5),
+            ({"nums": [1], "target": 1}, 1),
+            ({"nums": [0, 0, 0, 0, 0, 0, 0, 0, 1], "target": 1}, 256),
         ],
     },
     {
@@ -50,6 +68,9 @@ PROBLEMS = [
             ({"coins": [1, 5, 11], "amount": 15}, 3),
             ({"coins": [2], "amount": 3}, -1),
             ({"coins": [1, 2, 5], "amount": 11}, 3),
+            ({"coins": [1], "amount": 0}, 0),
+            ({"coins": [2, 5, 10, 1], "amount": 27}, 4),
+            ({"coins": [186, 419, 83, 408], "amount": 6249}, 20),
         ],
     },
 ]

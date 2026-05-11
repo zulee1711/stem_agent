@@ -37,6 +37,8 @@ PROBLEMS = [
             "Write a Python function: def solve(n: int) -> int"
         ),
         "test_cases": [
+            ({"n": 0}, 1),
+            ({"n": 1}, 1),
             ({"n": 2}, 2),
             ({"n": 3}, 3),
             ({"n": 5}, 8),
@@ -55,6 +57,8 @@ PROBLEMS = [
             "Write a Python function: def solve(nums: list) -> int"
         ),
         "test_cases": [
+            ({"nums": []}, 0),
+            ({"nums": [5]}, 5),
             ({"nums": [1, 2, 3, 1]}, 4),
             ({"nums": [2, 7, 9, 3, 1]}, 12),
             ({"nums": [2, 1, 1, 2]}, 4),
@@ -73,6 +77,7 @@ PROBLEMS = [
         "test_cases": [
             ({"nums": [-2, 1, -3, 4, -1, 2, 1, -5, 4]}, 6),
             ({"nums": [1]}, 1),
+            ({"nums": [-3, -2, -5]}, -2),
             ({"nums": [5, 4, -1, 7, 8]}, 23),
         ],
     },
@@ -92,6 +97,8 @@ PROBLEMS = [
             ({"s": "226"}, 3),
             ({"s": "06"}, 0),
             ({"s": "11106"}, 2),
+            ({"s": "10"}, 1),
+            ({"s": "2101"}, 1),
         ],
     },
     {
@@ -101,8 +108,7 @@ PROBLEMS = [
         "difficulty": "medium",
         "split": "eval",
         "description": (
-            "Given an integer array nums, return the length of the longest strictly "
-            "increasing subsequence.\n"
+            "Given an integer array nums, return the length of the longest strictly increasing subsequence.\n"
             "Write a Python function: def solve(nums: list) -> int"
         ),
         "test_cases": [
@@ -126,6 +132,8 @@ PROBLEMS = [
             ({"s": "leetcode", "wordDict": ["leet", "code"]}, True),
             ({"s": "applepenapple", "wordDict": ["apple", "pen"]}, True),
             ({"s": "catsandog", "wordDict": ["cats", "dog", "sand", "and", "cat"]}, False),
+            ({"s": "cars", "wordDict": ["car", "ca", "rs"]}, True),
+            ({"s": "a" * 30 + "b", "wordDict": ["a", "aa", "aaa", "aaaa", "aaaaa"]}, False),
         ],
     },
     {
@@ -140,9 +148,30 @@ PROBLEMS = [
             "Write a Python function: def solve(nums: list) -> int"
         ),
         "test_cases": [
+            ({"nums": [0]}, 0),
             ({"nums": [2, 3, 1, 1, 4]}, 2),
             ({"nums": [2, 3, 0, 1, 4]}, 2),
             ({"nums": [1, 1, 1, 1]}, 3),
+            ({"nums": [5, 4, 3, 2, 1, 0]}, 1),
+        ],
+    },
+    {
+        "id": make_id("dp", "1d", "arithmetic_slices"),
+        "title": "Arithmetic Slices",
+        "category": "1d_dp",
+        "difficulty": "medium",
+        "split": "test",
+        "description": (
+            "A subarray of length at least 3 is arithmetic if the difference between consecutive "
+            "elements is constant. Given nums, return the number of arithmetic subarrays.\n"
+            "Write a Python function: def solve(nums: list) -> int"
+        ),
+        "test_cases": [
+            ({"nums": [1, 2, 3, 4]}, 3),
+            ({"nums": [1]}, 0),
+            ({"nums": [1, 2, 3, 8, 9, 10]}, 2),
+            ({"nums": [7, 7, 7, 7]}, 3),
+            ({"nums": [1, 3, 5, 7, 9]}, 6),
         ],
     },
 ]
